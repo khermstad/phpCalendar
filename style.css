@@ -1,0 +1,38 @@
+body {
+  font-family: monospace;
+}
+
+table {
+   border: 1px solid black;
+}
+
+td {
+  border: 1px solid black;
+  width: 130px;
+  height: 130px;
+  vertical-align: top;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+tr {
+  border: 1px solid black;
+}
+
+th {
+  border: .5px solid black;
+  height: 30px;
+  width: 130px;
+}
+
+#dateHeader{
+  font-size: 30px;
+}
+
+input#currentYear{
+  width:40px;
+}
+
+input#currentDate{
+  width: 30px;
+}
