@@ -2,6 +2,7 @@
 
   // Jan Kristian Hermstad -- Web Programming Homework 4
 
+
   // variables from Post
   $month1 = $_POST['month1'];
   $date1 = $_POST['date1'];

@@ -36,3 +36,7 @@ input#currentYear{
 input#currentDate{
   width: 30px;
 }
+
+textarea{
+  width: 500px;
+}

@@ -9,9 +9,15 @@
 
     <body>
 
+      <?php
+          $username = $_GET['username'];
+          echo "<h1 id='userName'>$username"."'s Calendar</h1>";
+       ?>
+
+       <input type="text" name="date" id="currentUser" value="<?php echo $username?>" hidden></input>
       <!-- set timezone -->
       <?php
-      date_default_timezone_set('UTC')
+      date_default_timezone_set('EST')
       ?>
 
       <!-- dynamically set current month -->
@@ -21,7 +27,7 @@
           document.getElementById('monthDrop').value=x;
       });
       </script>
-
+    </br>
       <!-- drop down for Month -->
       Month:
       <select name="monthDrop" id="monthDrop">
@@ -53,7 +59,6 @@
         var date = $('#currentDate').val();
         var year = $('#currentYear').val();
 
-
         $.ajax({
           type: 'POST',
           url: 'date.php',
@@ -66,12 +71,15 @@
       </script>
 
 
+
+
       <!-- onload: ajax call to build calendar -->
       <script>
         $( document ).ready(function() {
           var month = $('#currentMonth').val();
           var date = $('#currentDate').val();
           var year = $('#currentYear').val();
+          var username = $('#currentUser').val();
 
           $.ajax({
             type: 'POST',
@@ -81,6 +89,27 @@
               $('#calendarBody').html(response);
             }
           });
+
+
+
+        });
+      </script>
+
+      <!-- onload: ajax call to build events list -->
+      <script>
+      $( document ).ready(function() {
+        var month = $('#monthDrop').val();
+        var date = $('#currentDate').val();
+        var year = $('#currentYear').val();
+        var username = $('#currentUser').val();
+        $.ajax({
+          type: 'POST',
+          url: 'setEventsList.php',
+          data: { month2: month, date2: date, year2: year, username2: username },
+          success: function(response) {
+            $('#eventsBody').html(response);
+          }
+        });
         });
       </script>
 
@@ -89,6 +118,67 @@
       <div id="calendarBody">
       </div>
 
+
+      <h2>EVENTS for Current Date:</h2>
+      <br/>
+        <div id="eventsBody">
+        </div>
+
+      <div id="recentEvents">
+      </div>
+    </br>
+      Add New Event:
+      </br>
+
+
+      Start-time:<input type="text" id="ts">
+      </br>
+      Body:<textarea id="addEventBody"></textarea>
+      </br>
+      <button id='addEvent'>ADD EVENT</button>
+
+      <!-- ajax call to add new event -->
+      <script>
+      $( "#addEvent" ).click(function() {
+        var month = $('#monthDrop').val();
+        var date = $('#currentDate').val();
+        var year = $('#currentYear').val();
+        var username = $('#currentUser').val();
+        var timeStamp = $('#ts').val();
+        var eventBody = $('#addEventBody').val();
+
+        $.ajax({
+          type: 'POST',
+          url: 'events.php',
+          data: { month2: month, date2: date, year2: year, username2: username, timeStamp2: timeStamp, eventBody2: eventBody },
+          success: function(response) {
+            $('#recentEvents').append(response);
+          }
+        });
+        });
+      </script>
+
+      <!-- ajax call to add new event -->
+      <script>
+      $( "#delete" ).click(function() {
+
+        $.ajax({
+          type: 'POST',
+          url: 'removeEvent.php',
+          data: { },
+          success: function(response) {
+
+          }
+        });
+        });
+      </script>
+
+
+
+
+      </br></br></br>
+
+      <a href="/calendar/login.php">Logout</a>
       <!-- hidden text field holding current month -->
       <input type="text" name="date" id="currentMonth" value="<?php echo date("m")?>" hidden></input>
     </body>
